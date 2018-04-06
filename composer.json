@@ -1,6 +1,7 @@
 {
   "name": "mate-code/yii2-mates",
   "description": "Light weight extensions for the Yii2 framework",
+  "keywords": ["bootstrap", "php", "html", "css", "yii2"],
   "type": "library",
   "license": "BSD-3-Clause",
   "minimum-stability": "dev",
