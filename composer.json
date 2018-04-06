@@ -1,0 +1,22 @@
+{
+  "name": "yii2-mates",
+  "description": "Light weight extensions for the Yii2 framework",
+  "type": "library",
+  "license": "BSD-3-Clause",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Marius Teller",
+      "email": "marius.teller@mail.de",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "mate\\yii\\": "src"
+    }
+  },
+  "require": {
+    "yiisoft/yii2": "~2.0.6"
+  }
+}
