@@ -354,7 +354,10 @@ class Generator extends \yii\gii\generators\crud\Generator
                 $phKeys = array_map(function ($word) {
                     return '{' . $word . '}';
                 }, array_keys($placeholders));
-                $phValues = array_values($placeholders);
+                $phValues = [];
+                foreach ($placeholders as $value) {
+                    $phValues[] = trim($value, "'");
+                }
                 $str = "'" . str_replace($phKeys, $phValues, $string) . "'";
             } else {
                 // No placeholders, just the given string
