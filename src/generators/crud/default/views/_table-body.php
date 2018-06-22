@@ -19,6 +19,7 @@ $searchModelName = StringHelper::basename($generator->searchModelClass);
 
 /** @var \yii\db\ActiveRecord $model */
 $model = new $generator->modelClass();
+$primaryKey = $generator->getTableSchema()->primaryKey[0];
 
 $columnCount = count($generator->getColumnNames());
 if($columnCount <= 3) {
@@ -47,7 +48,7 @@ $exclude = !isset($exclude) ? array() : $exclude;
        data-page-count="<?= "<?=" ?> $pagination->pageCount ?>">
 <?= "<?php" ?> /** @var $model \<?= $generator->modelClass ?> */ ?>
 <?= "<?php" ?> foreach ($dataProvider->getModels() as $model): ?>
-    <tr data-key="<?= "<?=" ?> $model-><?= $generator->getTableSchema()->primaryKey[0] ?> ?>">
+    <tr data-key="<?= "<?=" ?> $model-><?= $primaryKey ?> ?>">
 <?php foreach ($generator->getTableSchema()->columns as $column):
     if($generator->excludeColumnInViewTable($column)) continue;
     $foreignKeyColumns = $generator->getForeignKeyColumns();
@@ -81,20 +82,20 @@ $exclude = !isset($exclude) ? array() : $exclude;
                 <?= "<?php" ?> if (!in_array("action-view", $exclude)): ?>
                     <?= "<?=" ?> Html::a(
                         Glyphicon::eye_open(),
-                        ['<?= $modelNameUrl ?>/view', 'id' => $model->id],
+                        ['<?= $modelNameUrl ?>/view', 'id' => $model-><?= $primaryKey ?>],
                         ["class" => "ajax-dialog", "data-size" => "lg"]
                     ) ?>
                 <?= "<?php" ?> endif; ?>
                 <?= "<?php" ?> if (!in_array("action-update", $exclude)): ?>
                     <?= "<?=" ?> Html::a(
                         Glyphicon::pencil(),
-                        ['<?= $modelNameUrl ?>/update', 'id' => $model->id]
+                        ['<?= $modelNameUrl ?>/update', 'id' => $model-><?= $primaryKey ?>]
                     ) ?>
                 <?= "<?php" ?> endif; ?>
                 <?= "<?php" ?> if (!in_array("action-delete", $exclude)): ?>
                     <?= "<?=" ?> Html::a(
                         Glyphicon::trash(),
-                        ['<?= $modelNameUrl ?>/confirm-delete', 'id' => $model->id],
+                        ['<?= $modelNameUrl ?>/confirm-delete', 'id' => $model-><?= $primaryKey ?>],
                         ["class" => "ajax-dialog", "data-size" => "sm"]
                     ) ?>
                 <?= "<?php" ?> endif; ?>
