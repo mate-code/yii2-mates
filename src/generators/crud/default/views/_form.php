@@ -50,7 +50,7 @@ foreach ($generator->getColumnNames() as $attribute) {
         echo "$t<div class=\"row\">\n";
     }
 
-    echo "$t$t<div class=\"col-md-6\">\n";
+    echo "$t$t<div class=\"col-sm-6\">\n";
     echo "$t$t$t<?= " . $generator->generateActiveField($attribute, 3) . " ?>\n";
     echo "$t$t</div>\n";
 
