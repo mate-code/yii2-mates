@@ -45,9 +45,6 @@ trait UpdateDynamicToOneTrait
             );
             $addModel->setAttributes($creationAttributes);
             $addModel->save();
-            echo '<pre>';
-            echo print_r($addModel->errors);
-            echo '</pre>';
             $this->$idColumn = $addModel->$primaryKeyAttr;
         }
         return null;
