@@ -45,10 +45,25 @@ class SelectData extends Component
     public function eventRefreshModelCache(Event $event)
     {
         $modelClass = $event->data['modelClass'];
-        Yii::$app->cache->delete(self::CACHE_KEY_MODELS . $modelClass);
-        Yii::$app->cache->delete(self::CACHE_KEY_MODELS_DATA . $modelClass);
+        $cache = Yii::$app->cache;
+        $cache->delete(self::CACHE_KEY_MODELS . $modelClass);
+        $cache->delete(self::CACHE_KEY_MODELS_DATA . $modelClass);
         unset($this->cachedModels[$modelClass]);
-        Yii::$app->cache->set(self::CACHE_KEY_CACHED_MODELS, $this->cachedModels);
+        $cache->set(self::CACHE_KEY_CACHED_MODELS, $this->cachedModels);
+    }
+
+    /**
+     * clears the entire select data cache
+     */
+    public function clear()
+    {
+        $cache = Yii::$app->cache;
+        foreach ($this->cachedModels as $cachedModel) {
+            $cache->delete(self::CACHE_KEY_MODELS . $modelClass);
+            $cache->delete(self::CACHE_KEY_MODELS_DATA . $modelClass);
+        }
+        $this->cachedModels = [];
+        $cache->set(self::CACHE_KEY_CACHED_MODELS, $this->cachedModels);
     }
 
     /**
