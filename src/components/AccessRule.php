@@ -1,7 +1,7 @@
 <?php
 
 
-namespace common\components;
+namespace mate\yii\components;
 
 use common\models\User;
 use yii\web\IdentityInterface;
@@ -40,7 +40,7 @@ class AccessRule extends \yii\filters\AccessRule
 
     /**
      * @param bool $beStrict
-     * @return IdentityInterface
+     * @return IdentityInterface|\mate\yii\models\User
      */
     public static function activeUser($beStrict = true)
     {

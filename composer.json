@@ -18,6 +18,9 @@
     }
   },
   "require": {
+    "mate-code/dialog": "~1.0",
+    "mate-code/alert-boxes": "~1.0",
+    "mate-code/animated-form-label": "~1.0",
     "yiisoft/yii2": "~2.0.6"
   }
 }

@@ -51,7 +51,16 @@ class BooleanColumn extends DataColumn
     public function getDataCellValue($model, $key, $index)
     {
         $value = parent::getDataCellValue($model, $key, $index);
+        return self::displayValue($value);
+    }
 
+    /**
+     * get configured display string for boolean value
+     * @param $value
+     * @return string
+     */
+    public function displayValue($value)
+    {
         if(in_array($value, $this->trueValues, true)) {
             return $this->valueTrue;
         }

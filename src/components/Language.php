@@ -6,16 +6,17 @@ namespace mate\yii\components;
 use Yii;
 use yii\base\Component;
 use yii\web\Application;
+use yii\web\Cookie;
 
 class Language extends Component
 {
 
     public function init()
     {
-        Yii::$app->on(Application::EVENT_BEFORE_ACTION, [$this, 'setLanguage']);
+        Yii::$app->on(Application::EVENT_BEFORE_ACTION, [$this, 'initLanguage']);
     }
 
-    public function setLanguage()
+    public function initLanguage()
     {
         if (
             Yii::$app->hasProperty("session") &&
@@ -32,6 +33,22 @@ class Language extends Component
             $language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         } else {
             $language = "en";
+        }
+        Yii::$app->language = $language;
+    }
+
+    /**
+     * @param $language
+     */
+    public static function switchLanguage($language)
+    {
+        Yii::$app->session->set("language", $language);
+        $cookies = Yii::$app->request->cookies;
+        if(!$cookies->readOnly) {
+            Yii::$app->request->cookies->add(new Cookie([
+                'name' => 'language',
+                'value' => $language,
+            ]));
         }
         Yii::$app->language = $language;
     }
