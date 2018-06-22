@@ -59,8 +59,8 @@ class SelectData extends Component
     {
         $cache = Yii::$app->cache;
         foreach ($this->cachedModels as $cachedModel) {
-            $cache->delete(self::CACHE_KEY_MODELS . $modelClass);
-            $cache->delete(self::CACHE_KEY_MODELS_DATA . $modelClass);
+            $cache->delete(self::CACHE_KEY_MODELS . $cachedModel);
+            $cache->delete(self::CACHE_KEY_MODELS_DATA . $cachedModel);
         }
         $this->cachedModels = [];
         $cache->set(self::CACHE_KEY_CACHED_MODELS, $this->cachedModels);
