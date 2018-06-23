@@ -151,6 +151,8 @@ $.fn.tableSearch = function () {
 $(document).ready(function () {
 
     // searching results
-    $('form.table-search-form').tableSearch();
+    $('.table-search-form').each(function () {
+        $(this).tableSearch();
+    });
 
 });
