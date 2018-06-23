@@ -83,9 +83,10 @@ class SelectData extends Component
         $toField = $toField ? $toField : $this->getMap($modelClass)['to'];
 
         if ($useModels) {
-            $models = $this->getCachedModelData($modelClass, self::CACHE_KEY_MODELS, function ($modelClass) {
+            $models = $this->getCachedModelData($modelClass, self::CACHE_KEY_MODELS, function ($modelClass) use ($toField) {
                 /** @var ActiveRecord $modelClass  */
-                return $modelClass::find()->asArray()->all();
+                $orderBy = $this->getOrderBy($modelClass, $toField);
+                return $modelClass::find()->orderBy($orderBy)->all();
             });
             return ArrayHelper::map(
                 $models,
@@ -93,9 +94,10 @@ class SelectData extends Component
                 $toField
             );
         } else {
-            $modelsData = $this->getCachedModelData($modelClass, self::CACHE_KEY_MODELS_DATA, function ($modelClass) {
+            $modelsData = $this->getCachedModelData($modelClass, self::CACHE_KEY_MODELS_DATA, function ($modelClass) use ($toField) {
                 /** @var ActiveRecord $modelClass  */
-                return $modelClass::find()->asArray()->all();
+                $orderBy = $this->getOrderBy($modelClass, $toField);
+                return $modelClass::find()->orderBy($orderBy)->asArray()->all();
             });;
             return array_combine(
                 array_column($modelsData, $fromField),
@@ -104,6 +106,32 @@ class SelectData extends Component
         }
     }
 
+    /**
+     * @param $modelClass
+     * @param $toField
+     * @return string
+     */
+    protected function getOrderBy($modelClass, $toField)
+    {
+        $map = $this->getMap($modelClass, false);
+        if(isset($map['orderBy'])) {
+            return $map['orderBy'];
+        }
+        /** @var ActiveRecord $dummyModel */
+        $dummyModel = new $modelClass;
+        if($dummyModel->hasAttribute('order')) {
+            return 'order ASC';
+        }
+
+        return $toField . ' ASC';
+    }
+
+    /**
+     * @param $modelClass
+     * @param $keyPrefix
+     * @param $createDataFunction
+     * @return mixed
+     */
     protected function getCachedModelData($modelClass, $keyPrefix, $createDataFunction)
     {
         /** @var ActiveRecord|string $modelClass */
@@ -122,16 +150,19 @@ class SelectData extends Component
      * Get option value to option name mapping for the given class
      * Mappings are expected to have at least a "from" and a "to" attribute
      * @param $modelClass
+     * @param $beStrict throw exception if map could not be found
      * @return mixed
      */
-    protected function getMap($modelClass)
+    protected function getMap($modelClass, $beStrict = true)
     {
         if (isset($this->maps[$modelClass])) {
             return $this->maps[$modelClass];
         } elseif (isset($this->maps['default'])) {
             return $this->maps['default'];
-        } else {
+        } elseif($beStrict) {
             throw new \RuntimeException('No value to name map or default map found for ' . $modelClass . ' while trying to create a select field.');
+        } else {
+            return [];
         }
     }
 
