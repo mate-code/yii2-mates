@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
 trait UpdateToManyTrait
 {
 
-    protected function updateToMany($relationName, $modelClass, $selectedIds, $delete = true)
+    protected function updateToMany($relationName, $modelClass, $selectedIds, $delete = true, $primaryKeyAttr = "id")
     {
         /** @var Model $this */
         if(!$this instanceof Model) {
@@ -20,7 +20,7 @@ trait UpdateToManyTrait
 
         $existing = [];
         foreach ($this->$relationName as $relatedModel) {
-            $existing[$relatedModel->id] = $relatedModel;
+            $existing[$relatedModel->$primaryKeyAttr] = $relatedModel;
         }
         $existingIds = array_keys($existing);
 
