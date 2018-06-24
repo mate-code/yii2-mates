@@ -40,12 +40,14 @@ use yii\helpers\Html;
 use mate\yii\widgets\Glyphicon;
 
 $pagination = $dataProvider->pagination;
-$pagination->totalCount = $dataProvider->totalCount;
+if($pagination) {
+    $pagination->totalCount = $dataProvider->totalCount;
+}
 $exclude = !isset($exclude) ? array() : $exclude;
 ?>
-<tbody data-page="<?= "<?=" ?> $pagination->page + 1 ?>"
-       data-page-size="<?= "<?=" ?> $pagination->pageSize ?>"
-       data-page-count="<?= "<?=" ?> $pagination->pageCount ?>">
+<tbody data-page="<?= "<?=" ?> $pagination ? $pagination->page + 1 : 0 ?>"
+       data-page-size="<?= "<?=" ?> $pagination ? $pagination->pageSize : 0 ?>"
+       data-page-count="<?= "<?=" ?> $pagination ? $pagination->pageCount : 0 ?>">
 <?= "<?php" ?> /** @var $model \<?= $generator->modelClass ?> */ ?>
 <?= "<?php" ?> foreach ($dataProvider->getModels() as $model): ?>
     <tr data-key="<?= "<?=" ?> $model-><?= $primaryKey ?> ?>">
