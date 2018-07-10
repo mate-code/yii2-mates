@@ -23,7 +23,9 @@ class SelectData
      */
     public static function fromModel($modelClass, $fromField = null, $toField = null, $useModels = false)
     {
-        return Yii::$app->selectData->fromModel($modelClass, $fromField, $toField, $useModels);
+        /** @var \mate\yii\components\SelectData $selectData */
+        $selectData = Yii::$app->selectData;
+        return $selectData->fromModel($modelClass, $fromField, $toField, $useModels);
     }
 
 }

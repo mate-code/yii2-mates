@@ -11,6 +11,10 @@ class AlertBoxes
 
     public static function htmlFromFlashMessages($alertOptions = [], $containerOptions = [])
     {
+        $allFlashes = Yii::$app->session->getAllFlashes();
+        if(empty($allFlashes)) {
+            return null;
+        }
         $view = Yii::$app->getView();
 
         AlertBoxesAsset::register($view);
@@ -26,7 +30,7 @@ class AlertBoxes
         });");
 
         $flashMessages = [];
-        foreach (Yii::$app->session->getAllFlashes() as $status => $data) {
+        foreach ($allFlashes as $status => $data) {
             $data = (array)$data;
             foreach ($data as $message) {
                 $flashMessages[] = [
