@@ -16,6 +16,9 @@ trait UpdateToManyTrait
             throw new \RuntimeException("Class using UpdateManyToManyTrait should extend " . Model::class);
         }
         $selectedIds = empty($selectedIds) ? array() : $selectedIds;
+        if(!is_array($selectedIds)) {
+            return null;
+        }
         /** @var ActiveRecord $modelClass */
 
         $existing = [];
@@ -44,6 +47,9 @@ trait UpdateToManyTrait
     {
         $processedSelection = [];
         $selectedValues = $this->$selectionProperty;
+        if(!$selectedValues || !is_array($selectedValues)) {
+            return $processedSelection;
+        }
         /** @var ActiveRecord $modelClass */
         foreach ($selectedValues as $selectedNameOrPosition => $selectedValue) {
             if(!is_numeric($selectedValue) && null !== ($model = $modelClass::findOne([$nameAttribute => $selectedValue]))) {
