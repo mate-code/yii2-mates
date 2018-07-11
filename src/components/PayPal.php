@@ -16,6 +16,7 @@ class PayPal extends Component
     public $client_id;
     public $client_secret;
     public $log_file;
+    public $mode;
 
     public $feePercent = 1.9;
     public $feeFixed = 0.35;
@@ -34,6 +35,11 @@ class PayPal extends Component
                 'log.LogEnabled' => true,
                 'log.FileName' => $this->log_file,
                 'log.LogLevel' => 'DEBUG'
+            ]);
+        }
+        if ($this->mode == 'live') {
+            $this->apiContext->setConfig([
+                'mode' => 'live',
             ]);
         }
     }
