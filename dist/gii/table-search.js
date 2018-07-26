@@ -20,6 +20,19 @@ $.fn.tableSearch = function () {
     this.pagination = null;
     this.sendTimeOut = null;
 
+    this.formIsEmpty = function () {
+        var isEmpty = true;
+        $.each(this.formFields.serializeArray(), function (i, data) {
+            if(data.value === "" || -1 !== $.inArray(data.name, ['page', 'per-page'])) {
+                return null;
+            }
+            console.log(data);
+            isEmpty = false;
+            return false;
+        });
+        return isEmpty;
+    };
+
     this.sendSearchForm = function () {
         var actionUrl = form.attr("action");
         var formData = this.formFields.serialize();
@@ -139,6 +152,10 @@ $.fn.tableSearch = function () {
     this.formDatePicker.on("changeDate", function () {
         form.sendSearchForm();
     });
+
+    if(!this.formIsEmpty()) {
+        this.sendSearchForm();
+    }
 
     $(".search-clear").click(function () {
         form.formInputs.val("");
