@@ -64,14 +64,40 @@ $.fn.tableSearch = function () {
         form.pagination.pageSize = pageSize;
         form.pagination.currentPage = currentPage;
 
+        var firstLink = 1;
+        var lastLink = pageCount;
+        var maxLinks = 16;
+        if(pageCount > maxLinks) {
+            lastLink = maxLinks;
+            if(currentPage > (maxLinks/2)) {
+                firstLink = currentPage - (maxLinks/2);
+                lastLink = firstLink + maxLinks;
+            }
+            if(lastLink > pageCount) {
+                firstLink = pageCount - maxLinks;
+                lastLink = pageCount;
+            }
+        }
+
+        if(firstLink != 1) {
+            var first = $('<li></li>');
+            first.html('<a href="#" data-page="1">««</a>');
+            form.pagination.append(first);
+            form.pagination.firstButton = first;
+        }
+
         var prev = $('<li class="prev"></li>');
         if (currentPage === 1) prev.addClass('disabled');
         prev.html('<a href="#" data-page="' + (currentPage - 1) + '">«</a>');
         form.pagination.append(prev);
         form.pagination.prevButton = prev;
 
+        if(firstLink != 1) {
+            form.pagination.append($('<li class="disabled"><a href="#">...</a></li>'));
+        }
+
         form.pagination.pageButtons = [];
-        for (var i = 1; i <= pageCount; i++) {
+        for (var i = firstLink; i <= lastLink; i++) {
             var page = $('<li></li>');
             if (currentPage === i) page.addClass('active');
             page.html('<a href="#" data-page="' + i + '">' + i + '</a>');
@@ -79,11 +105,22 @@ $.fn.tableSearch = function () {
             form.pagination.pageButtons[i] = page;
         }
 
+        if(lastLink != pageCount) {
+            form.pagination.append($('<li class="disabled"><a href="#">...</a></li>'));
+        }
+
         var next = $('<li class="prev"></li>');
         if (currentPage === pageCount) next.addClass('disabled');
         next.html('<a href="#" data-page="' + (currentPage + 1) + '">»</a>');
         form.pagination.append(next);
         form.pagination.nextButton = next;
+
+        if(lastLink != pageCount) {
+            var last = $('<li></li>');
+            last.html('<a href="#" data-page="' + pageCount + '">»»</a>');
+            form.pagination.append(last);
+            form.pagination.lastButton = last;
+        }
 
         form.pagination.find('li:not(.disabled) a').click(function (e) {
             e.preventDefault();
@@ -112,9 +149,6 @@ $.fn.tableSearch = function () {
         pageInput.val(page);
         pageSizeInput.val(form.pagination.pageSize);
         form.sendSearchForm();
-
-        form.pagination.find('.active').removeClass('active');
-        form.pagination.pageButtons[page].addClass('active');
 
         if (page === 1) {
             form.pagination.prevButton.addClass('disabled');
