@@ -27,6 +27,8 @@ class NameKey
             $nameKey
         );
         $nameKey = strtolower($nameKey);
+        // Removes remaining special chars.
+        $nameKey = preg_replace('/[^A-Za-z0-9\-]/', '', $nameKey);
         return $nameKey;
     }
 
