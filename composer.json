@@ -22,6 +22,7 @@
     "mate-code/alert-boxes": "~1.0",
     "mate-code/animated-label-form": "~1.0",
     "yiisoft/yii2": "~2.0.6",
+    "yiisoft/yii2-jui": "^2.0",
     "igorescobar/jQuery-Mask-Plugin": "^1.14"
   }
 }

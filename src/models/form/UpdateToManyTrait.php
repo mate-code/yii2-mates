@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
 trait UpdateToManyTrait
 {
 
-    protected function updateToMany($relationName, $modelClass, $selectedIds, $delete = true, $primaryKeyAttr = "id")
+    public function updateToMany($relationName, $modelClass, $selectedIds, $delete = true, $primaryKeyAttr = "id")
     {
         /** @var Model $this */
         if(!$this instanceof Model) {
@@ -43,7 +43,7 @@ trait UpdateToManyTrait
         }
     }
 
-    protected function saveToManyRelatedModels($selectionProperty, $modelClass, $nameAttribute = "name", $primaryKeyAttr = "id")
+    public function saveToManyRelatedModels($selectionProperty, $modelClass, $nameAttribute = "name", $primaryKeyAttr = "id")
     {
         $processedSelection = [];
         $selectedValues = $this->$selectionProperty;
