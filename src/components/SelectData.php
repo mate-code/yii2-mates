@@ -76,11 +76,14 @@ class SelectData extends Component
      * @param $toField
      * @param bool $useModels
      * @return array
+     * @throws RuntimeException
      */
-    public function fromModel($modelClass, $fromField = null, $toField = null, $useModels = false)
+    public function fromModel($modelClass, $fromField = null, $toField = null, $useModels = null)
     {
-        $fromField = $fromField ? $fromField : $this->getMap($modelClass)['from'];
-        $toField = $toField ? $toField : $this->getMap($modelClass)['to'];
+        $map = $this->getMap($modelClass);
+        $fromField = $fromField ? $fromField : $map['from'];
+        $toField = $toField ? $toField : $map['to'];
+        $useModels = $useModels === null && isset($map['useModels']) ? $map['useModels'] : false;
 
         if ($useModels) {
             $models = $this->getCachedModelData($modelClass, self::CACHE_KEY_MODELS, function ($modelClass) use ($toField) {
@@ -98,11 +101,18 @@ class SelectData extends Component
                 /** @var ActiveRecord $modelClass  */
                 $orderBy = $this->getOrderBy($modelClass, $toField);
                 return $modelClass::find()->orderBy($orderBy)->asArray()->all();
-            });;
-            return array_combine(
-                array_column($modelsData, $fromField),
-                array_column($modelsData, $toField)
-            );
+            });
+            $fromData = array_column($modelsData, $fromField);
+            $toData = array_column($modelsData, $toField);
+            if(count($fromData) != count($toData)) {
+                throw new \RuntimeException(
+                    "Invalid data mapping for model $modelClass"
+                    . (count($fromData) == 0 ? ": Indexes could not be retrieved." : "")
+                    . (count($toData) == 0 ? ": Values could not be retrieved." : "")
+                    ." Try setting useModels = true"
+                );
+            }
+            return array_combine($fromData, $toData);
         }
     }
 

@@ -21,7 +21,7 @@ class SelectData
      * @param bool $useModels
      * @return array
      */
-    public static function fromModel($modelClass, $fromField = null, $toField = null, $useModels = false)
+    public static function fromModel($modelClass, $fromField = null, $toField = null, $useModels = null)
     {
         /** @var \mate\yii\components\SelectData $selectData */
         $selectData = Yii::$app->selectData;
