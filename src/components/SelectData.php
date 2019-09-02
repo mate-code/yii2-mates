@@ -83,7 +83,7 @@ class SelectData extends Component
         $map = $this->getMap($modelClass);
         $fromField = $fromField ? $fromField : $map['from'];
         $toField = $toField ? $toField : $map['to'];
-        $useModels = $useModels === null && isset($map['useModels']) ? $map['useModels'] : false;
+        $useModels = $useModels === null ? (isset($map['useModels']) ? $map['useModels'] : false) : $useModels;
 
         if ($useModels) {
             $models = $this->getCachedModelData($modelClass, self::CACHE_KEY_MODELS, function ($modelClass) use ($toField) {
