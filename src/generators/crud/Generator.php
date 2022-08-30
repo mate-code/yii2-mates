@@ -268,8 +268,9 @@ class Generator extends \yii\gii\generators\crud\Generator
             $relatedClass = $relatedNamespace . '\\' . $relatedClassName;
 
             if (class_exists($relatedClass) && is_subclass_of($relatedClass, ActiveRecord::class)) {
-                /** @var ActiveRecord $relatedClass */
-                $relatedRules = $relatedClass::rules();
+                /** @var ActiveRecord $relatedModel */
+                $relatedModel = new $relatedClass();
+                $relatedRules = $relatedModel->rules();
             } else {
                 //echo "Related class $relatedClass does not exist or is not a child of ActiveRecord";
                 return false;
